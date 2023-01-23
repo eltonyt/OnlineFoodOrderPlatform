@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-@Component
+//@Component
 @Slf4j
 public class LoginCheckInterceptor implements HandlerInterceptor {
     // HELPS MATCH PATHS
@@ -48,7 +48,8 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         if (userLoggedIn)
             return;
         System.out.println(JSON.toJSONString(R.error("NOTLOGIN")));
-        response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
+        response.addHeader("data.msg", JSON.toJSONString(R.error("NOTLOGIN")));
+//        response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
         return;
     }
 }
