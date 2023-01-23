@@ -26,9 +26,9 @@ public class LoginCheckFilter implements Filter {
         // WHITELIST
         String[] urls = new String[] {
                 "/employee/login",
-                "/employee/logout"
-//                "/backend/**",
-//                "/front/**"
+                "/employee/logout",
+                "/backend/**",
+                "/front/**"
         };
         boolean whiteListedRequest = whiteListedURI(urls, requestURI);
         if (whiteListedRequest) {

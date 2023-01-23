@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/employee")
@@ -59,5 +60,26 @@ public class EmployeeController {
         HttpSession httpSession = request.getSession();
         httpSession.removeAttribute("employee");
         return R.success("Logged Out");
+    }
+
+    @PostMapping()
+    public R<String> createEmployee(HttpServletRequest request, @RequestBody Employee employee) {
+        String userName = employee.getUsername();
+        LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Employee::getUsername, userName);
+        Employee emp = employeeService.getOne(queryWrapper);
+        if (emp == null) {
+            LocalDateTime now = LocalDateTime.now();
+            employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
+            employee.setCreateTime(now);
+            employee.setUpdateTime(now);
+            employee.setCreateUser((Long) request.getSession().getAttribute("employee"));
+            employee.setUpdateUser((Long) request.getSession().getAttribute("employee"));
+            employeeService.save(employee);
+            return R.success("Success");
+        }
+        else
+            return R.success("Username already existed. Please try with another username.");
+
     }
 }
