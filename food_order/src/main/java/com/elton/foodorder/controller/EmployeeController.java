@@ -60,7 +60,7 @@ public class EmployeeController {
         return R.success("Logged Out");
     }
 
-    @PostMapping()
+    @PostMapping
     public R<String> createEmployee(HttpServletRequest request, @RequestBody Employee employee) {
         String userName = employee.getUsername();
         LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
@@ -86,5 +86,13 @@ public class EmployeeController {
         queryWrapper.orderByDesc(Employee::getUpdateTime);
         employeeService.page(pageInfo, queryWrapper);
         return R.success(pageInfo);
+    }
+
+    @PutMapping
+    public R<String> update(HttpServletRequest request, @RequestBody Employee employee) {
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser((Long) request.getSession().getAttribute("employee"));
+        employeeService.updateById(employee);
+        return R.success("Employee Updated");
     }
 }
