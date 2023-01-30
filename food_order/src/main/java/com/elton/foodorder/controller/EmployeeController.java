@@ -95,4 +95,12 @@ public class EmployeeController {
         employeeService.updateById(employee);
         return R.success("Employee Updated");
     }
+
+    @GetMapping("/{id}")
+    public R<Employee> getById(@PathVariable Long id){
+        Employee employee = employeeService.getById(id);
+        if (employee == null)
+            return R.error("No Employee Found");
+        return R.success(employee);
+    }
 }
