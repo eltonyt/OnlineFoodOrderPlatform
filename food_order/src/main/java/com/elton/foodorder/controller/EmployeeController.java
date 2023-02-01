@@ -65,12 +65,7 @@ public class EmployeeController {
         String userName = employee.getUsername();
         LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Employee::getUsername, userName);
-        LocalDateTime now = LocalDateTime.now();
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
-        employee.setCreateTime(now);
-        employee.setUpdateTime(now);
-        employee.setCreateUser((Long) request.getSession().getAttribute("employee"));
-        employee.setUpdateUser((Long) request.getSession().getAttribute("employee"));
         employeeService.save(employee);
         return R.success("Success");
     }

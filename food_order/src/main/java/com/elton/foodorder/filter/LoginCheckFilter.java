@@ -1,6 +1,7 @@
 package com.elton.foodorder.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.elton.foodorder.utils.BaseContext;
 import com.elton.foodorder.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
@@ -39,6 +40,8 @@ public class LoginCheckFilter implements Filter {
 
         if (httpServletRequest.getSession().getAttribute("employee") != null) {
             log.info("Employee already logged in.");
+            Long employeeId = (Long) httpServletRequest.getSession().getAttribute("employee");
+            BaseContext.setCurrentId(employeeId);
             filterChain.doFilter(servletRequest, httpServletResponse);
             return;
         }
